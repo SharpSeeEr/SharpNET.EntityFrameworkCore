@@ -5,7 +5,6 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-//using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SharpNET.EntityFrameworkCore.DataReaders
 {
@@ -23,8 +22,9 @@ namespace SharpNET.EntityFrameworkCore.DataReaders
             _enumerator = _queryable.GetEnumerator();
             _properties = _queryable
                 .ElementType
-                .GetTypeInfo()
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public);
+                .GetRuntimeProperties()
+                .Where(p => p.CanRead)
+                .ToArray();
             _recordCount = 0;
         }
 
@@ -137,6 +137,7 @@ namespace SharpNET.EntityFrameworkCore.DataReaders
 
         private long PushToBuffer(int ordinal, long dataOffset, object[] buffer, int bufferOffset, int length)
         {
+            throw new NotImplementedException();
             //var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
             //byte[] ordinalBytes;
             //using (var memory = new MemoryStream())
@@ -149,7 +150,7 @@ namespace SharpNET.EntityFrameworkCore.DataReaders
 
             //var ordinalTotal = ordinalBytes.LongLength - dataOffset;
             //return ordinalTotal > length ? length : ordinalTotal;
-            return 0;
+            //return 0;
         }
 
         public override Guid GetGuid(int ordinal)

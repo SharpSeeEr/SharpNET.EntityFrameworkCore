@@ -91,8 +91,8 @@ namespace SharpNET.EntityFrameworkCore.Extensions
 
         private static void VerifyDestinationCanReceiveSource(IQueryable source, IQueryable destination)
         {
-            var sourceFields = source.ElementType.GetTypeInfo().GetProperties();
-            var destinationFields = destination.ElementType.GetTypeInfo().GetProperties();
+            var sourceFields = source.ElementType.GetRuntimeProperties();
+            var destinationFields = destination.ElementType.GetRuntimeProperties();
 
             if (!destinationFields.All(info => sourceFields.Any(propertyInfo => propertyInfo.Name == info.Name && propertyInfo.PropertyType == info.PropertyType)))
             {
