@@ -2,11 +2,6 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Linq;
-using SharpNET.EntityFrameworkCore.Auditing.Entities;
-using JetBrains.Annotations;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Reflection;
 
 namespace SharpNET.EntityFrameworkCore.ChangeTracking
 {
@@ -55,6 +50,7 @@ namespace SharpNET.EntityFrameworkCore.ChangeTracking
 
         protected void UpdateEntityDates(DateTime changeDate, EntityEntry<IChangeTrackingEntity> auditedEntry)
         {
+            // Have to set the values using the CurrentValues collection because the setters may/should not be accessible/defined.
             if (auditedEntry.State == EntityState.Added)
             {
                 auditedEntry.CurrentValues["CreatedById"] = _userId;
@@ -64,63 +60,6 @@ namespace SharpNET.EntityFrameworkCore.ChangeTracking
             // Modified always gets updated
             auditedEntry.CurrentValues["ModifiedById"] = _userId;
             auditedEntry.CurrentValues["Modified"] = changeDate;
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            var changeTrackingType = typeof(ChangeTrackingEntity).GetTypeInfo();
-            var entityTypes = modelBuilder.Model.GetEntityTypes();
-            foreach (var item in entityTypes.Where(t => changeTrackingType.IsAssignableFrom(t.ClrType.GetTypeInfo())))
-            {
-                var entity = modelBuilder.Entity(item.ClrType);
-                entity.Property("Modified")
-                    //.HasField("_modified")
-                    .HasValueGenerator<DateTimeNowValueGenerator>()
-                    .ValueGeneratedOnAddOrUpdate()
-                    .Metadata.IsReadOnlyBeforeSave = false;
-
-                entity.Property("ModifiedById")
-                    //.HasField("_modifiedById")
-                    .HasValueGenerator<UserIdValueGenerator>()
-                    .ValueGeneratedOnAddOrUpdate()
-                    .Metadata.IsReadOnlyBeforeSave = false;
-
-                entity.Property("Created")
-                    //.HasField("_created")
-                    .HasValueGenerator<DateTimeNowValueGenerator>()
-                    .ValueGeneratedOnAdd()
-                    .Metadata.IsReadOnlyBeforeSave = false;
-
-                entity.Property("CreatedById")
-                    //.HasField("_createdById")
-                    .HasValueGenerator<UserIdValueGenerator>()
-                    .ValueGeneratedOnAdd()
-                    .Metadata.IsReadOnlyBeforeSave = false;
-            }
-
-
-
-            base.OnModelCreating(modelBuilder);
-        }
-    }
-
-    public class DateTimeNowValueGenerator : Microsoft.EntityFrameworkCore.ValueGeneration.ValueGenerator<DateTime>
-    {
-        public override bool GeneratesTemporaryValues => false;
-
-        public override DateTime Next(EntityEntry entry)
-        {
-            return DateTime.UtcNow;
-        }
-    }
-
-    public class UserIdValueGenerator : Microsoft.EntityFrameworkCore.ValueGeneration.ValueGenerator<int>
-    {
-        public override bool GeneratesTemporaryValues => false;
-
-        public override int Next(EntityEntry entry)
-        {
-            return ((ChangeTrackingDbContext)entry.Context).UserId;
         }
     }
 }
