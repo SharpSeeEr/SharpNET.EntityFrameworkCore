@@ -12,16 +12,9 @@ namespace SharpNET.EntityFrameworkCore.Tests.Data
         public string LastName { get; set; }
         public string Email { get; set; }
 
-        protected DateTime _created;
-        public DateTime Created => _created;
-
-        protected int _createdById;
-        public int CreatedById => _createdById;
-
-        protected DateTime _modified;
-        public DateTime Modified => _modified;
-
-        protected int _modifiedById;
-        public int ModifiedById => _modifiedById;
+        public DateTime Created { get; set; }
+        public int CreatedById { get; set; }
+        public DateTime Modified { get; set; }
+        public int ModifiedById { get; set; }
     }
 }

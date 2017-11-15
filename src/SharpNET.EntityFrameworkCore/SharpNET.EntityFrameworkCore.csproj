@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>0.1.0-alpha</Version>
+    <Version>0.4.0-beta</Version>
     <Authors>SharpSeeEr</Authors>
     <Company>SharpSeer Group</Company>
     <Product />
     <Description>Provides a ChangeTrackingDbContext that will automatically updates Created and Modified fields as well as some basic DbContext extension methods from https://github.com/hoagsie/BetterEntityFramework.</Description>
-    <Copyright>2016</Copyright>
+    <Copyright>2017</Copyright>
     <PackageLicenseUrl>https://github.com/SharpSeeEr/SharpNET.EntityFrameworkCore/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/SharpSeeEr/SharpNET.EntityFrameworkCore</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SharpSeeEr/SharpNET.EntityFrameworkCore.git</RepositoryUrl>
@@ -18,8 +18,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.2" />
-    <PackageReference Include="System.Reactive.Linq" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
+    <PackageReference Include="System.Reactive.Linq" Version="4.0.0-preview00001" />
     <PackageReference Include="System.Reflection.Extensions" Version="4.3.0" />
   </ItemGroup>
 

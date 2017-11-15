@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SharpNET.EntityFrameworkCore.ChangeTracking
 {
@@ -22,6 +23,12 @@ namespace SharpNET.EntityFrameworkCore.ChangeTracking
         {
             UpdateDates();
             return base.SaveChanges();
+        }
+
+        public Task<int> SaveChangesAsync()
+        {
+            UpdateDates();
+            return base.SaveChangesAsync();
         }
 
         protected void UpdateDates()

@@ -8,9 +8,9 @@ namespace SharpNET.EntityFrameworkCore.ChangeTracking
 {
     public interface IChangeTrackingEntity : IEntity
     {
-        DateTime Created { get; }
-        int CreatedById { get; }
-        DateTime Modified { get; }
-        int ModifiedById { get; }
+        DateTime Created { get; set; }
+        int CreatedById { get; set; }
+        DateTime Modified { get; set; }
+        int ModifiedById { get; set; }
     }
 }

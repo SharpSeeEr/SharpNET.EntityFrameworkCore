@@ -8,6 +8,7 @@ using SharpNET.EntityFrameworkCore.DataReaders;
 using SharpNET.EntityFrameworkCore.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace SharpNET.EntityFrameworkCore.Extensions
 {
@@ -31,6 +32,46 @@ namespace SharpNET.EntityFrameworkCore.Extensions
         public static void ClearCache(this DbContext context)
         {
             ClearCache(context, context.ChangeTracker.Entries().Select(entry => entry.Entity));
+        }
+
+        public static List<TruncatedFieldInfo> GetTruncatedFields(this DbContext context)
+        {
+            var entries = context.ChangeTracker.Entries().Where(e => e.State != EntityState.Unchanged);
+
+            var truncatedFields = new List<TruncatedFieldInfo>();
+            foreach (var entry in entries)
+            {
+                var entityType = entry.GetType();
+                var props = entityType.GetProperties().Where(p => p.PropertyType == typeof(string));
+                foreach (var prop in props)
+                {
+                    var maxLengthAttr = prop.GetCustomAttribute<MaxLengthAttribute>();
+                    if (maxLengthAttr != null)
+                    {
+                        var value = prop.GetValue(entry.Entity) as string;
+                        if (value != null && value.Length > maxLengthAttr.Length)
+                        {
+                            var info = new TruncatedFieldInfo()
+                            {
+                                ClassName = entityType.Name,
+                                PropertyName = prop.Name,
+                                Length = value.Length,
+                                MaxLength = maxLengthAttr.Length
+                            };
+                            truncatedFields.Add(info);
+                        }
+                    }
+                }
+            }
+            return truncatedFields;
+        }
+
+        public class TruncatedFieldInfo
+        {
+            public string ClassName { get; set; }
+            public string PropertyName { get; set; }
+            public int Length { get; set; }
+            public int MaxLength { get; set; }
         }
 
         /// <summary>
