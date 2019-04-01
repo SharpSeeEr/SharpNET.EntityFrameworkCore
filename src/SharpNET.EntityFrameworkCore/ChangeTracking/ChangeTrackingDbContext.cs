@@ -11,13 +11,10 @@ namespace SharpNET.EntityFrameworkCore.ChangeTracking
         public ChangeTrackingDbContext(DbContextOptions options)
             :base(options)
         {
-
         }
 
         protected int _userId = 0;
         public int UserId { get { return _userId; } }
-
-        public int AuditTypeMap { get; private set; }
 
         public override int SaveChanges()
         {

@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using SharpNET.EntityFrameworkCore.ChangeTracking;
+using SharpNET.EntityFrameworkCore.Entities;
 using SharpNET.EntityFrameworkCore.Extensions;
 
 namespace SharpNET.EntityFrameworkCore.Tests.Data
 {
-    class TestChangeTrackingContext : ChangeTrackingDbContext
+    class TestEntityDbContext : EntityDbContext
     {
-        public TestChangeTrackingContext(DbContextOptions options)
+        public TestEntityDbContext(DbContextOptions options)
             : base(options)
         {
-            _userId = 1;
         }
 
-        public DbSet<UserProfile> Profiles { get; set; }
+        public override string GetUsername()
+        {
+            return "TestUser";
+        }
+
+        public DbSet<UserProfileEntity> Profiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

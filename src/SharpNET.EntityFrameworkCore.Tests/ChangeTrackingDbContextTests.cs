@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Sqlite.Infrastructure.Internal;
 using SharpNET.EntityFrameworkCore.Tests.Data;
 using Xunit;
 
@@ -23,7 +24,7 @@ namespace SharpNET.EntityFrameworkCore.Tests
 
         private void CloseConnection(DbContextOptions options)
         {
-            options.GetExtension<Microsoft.EntityFrameworkCore.Infrastructure.Internal.SqliteOptionsExtension>()
+            options.GetExtension<SqliteOptionsExtension>()
                     .Connection.Close();
         }
 
