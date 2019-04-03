@@ -6,7 +6,6 @@ namespace SharpNET.EntityFrameworkCore.Entities
 {
     public interface IModifiableEntity
     {
-        string Name { get; set; }
     }
 
     public interface IEntity : IModifiableEntity

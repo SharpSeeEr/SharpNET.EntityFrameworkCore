@@ -11,14 +11,14 @@ namespace SharpNET.EntityFrameworkCore.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public T Id { get; set; }
+
         object IEntity.Id
         {
             get { return this.Id; }
         }
 
-        public string Name { get; set; }
-
         private DateTime? createdDate;
+
         public DateTime CreatedOn
         {
             get { return createdDate ?? DateTime.UtcNow; }
@@ -27,7 +27,10 @@ namespace SharpNET.EntityFrameworkCore.Entities
 
         public DateTime ModifiedOn { get; set; }
 
+        [MaxLength(100)]
         public string CreatedBy { get; set; }
+
+        [MaxLength(100)]
         public string ModifiedBy { get; set; }
 
         [Timestamp]

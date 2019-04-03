@@ -36,7 +36,6 @@ namespace SharpNET.EntityFrameworkCore.Tests
             var options = CreateOptions();
             try
             {
-
                 using (var context = new TestEntityDbContext(options))
                 {
                     context.Database.EnsureCreated();
@@ -116,7 +115,7 @@ namespace SharpNET.EntityFrameworkCore.Tests
                 {
                     var user = context.Profiles.First();
                     Assert.True(user.ModifiedOn > start);
-                    Assert.True(user.CreatedOn == createdOn, 
+                    Assert.True(user.CreatedOn == createdOn,
                         $"CreatedOn ({user.CreatedOn}) was not updated, expected ({createdOn})");
                 }
             }
